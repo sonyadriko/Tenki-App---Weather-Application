@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="no_space">0dp</dimen>
+    <dimen name="smaller_space_2">2dp</dimen>
+    <dimen name="smaller_space">4dp</dimen>
+    <dimen name="small_space_6">6dp</dimen>
+    <dimen name="small_space_8">8dp</dimen>
+    <dimen name="small_space_10">10dp</dimen>
+    <dimen name="small_space">12dp</dimen>
+    <dimen name="medium_space_14">14dp</dimen>
+    <dimen name="medium_space">16dp</dimen>
+    <dimen name="extra_medium_space">20dp</dimen>
+    <dimen name="large_space">24dp</dimen>
+    <dimen name="extra_large_space">28dp</dimen>
+    <dimen name="larger_space">32dp</dimen>
+    <dimen name="extra_larger_space">36dp</dimen>
+    <dimen name="largest_space">40dp</dimen>
+    <dimen name="largest_space_48">48dp</dimen>
+    <dimen name="largest_space_60">60dp</dimen>
+    <dimen name="largest_space_70">70dp</dimen>
+    <dimen name="largest_space_80">80dp</dimen>
+</resources>
