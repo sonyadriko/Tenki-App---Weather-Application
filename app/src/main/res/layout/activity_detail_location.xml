@@ -65,7 +65,7 @@
                     android:layout_height="36dp"
                     android:contentDescription="@string/wind"
                     android:layout_gravity="center"
-                    android:src="@drawable/wind" />
+                    android:src="@drawable/rain" />
 
                 <TextView
                     android:layout_marginTop="8dp"
