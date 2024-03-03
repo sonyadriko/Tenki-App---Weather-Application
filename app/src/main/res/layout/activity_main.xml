@@ -81,7 +81,6 @@
             android:layout_height="wrap_content"/>
 
         <ImageView
-
             android:paddingEnd="@dimen/medium_space"
             android:id="@+id/mainWeather"
             android:layout_width="165dp"
@@ -89,9 +88,7 @@
             android:layout_alignEnd="@+id/tv_mainTemp"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerCrop"
-            android:src="@drawable/storm"
-            android:visibility="invisible"
-            tools:visibility="visible" />
+            android:src="@drawable/storm" />
 
     </LinearLayout>
 
@@ -99,6 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:layout_marginBottom="36dp"
         app:cardBackgroundColor="#202329"
         app:cardCornerRadius="16dp"
         android:layout_marginRight="@dimen/medium_space"
@@ -216,6 +214,20 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:background="#1A1C1E"
+        app:tabIndicatorColor="#1A1C1E"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/colorNeutral50" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 
 
