@@ -123,9 +123,10 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/rain" />
+                    android:src="@drawable/wind" />
 
                 <TextView
+                    android:id="@+id/tv_wind"
                     android:layout_marginTop="8dp"
                     android:textColor="#F3F3F3"
                     android:textSize="16dp"
@@ -160,6 +161,7 @@
                     android:src="@drawable/huminity" />
 
                 <TextView
+                    android:id="@+id/tv_humidity"
                     android:layout_marginTop="8dp"
                     android:textColor="#F3F3F3"
                     android:textSize="16dp"
@@ -194,6 +196,7 @@
                     android:src="@drawable/rain" />
 
                 <TextView
+                    android:id="@+id/tv_rain"
                     android:layout_marginTop="8dp"
                     android:textColor="#F3F3F3"
                     android:textSize="16dp"

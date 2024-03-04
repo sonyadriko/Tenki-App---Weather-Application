@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.tenki.databinding.ActivityMainBinding
 import com.example.tenki.model.WeatherData
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -193,12 +194,14 @@ class MainActivity : AppCompatActivity() {
             binding.tvCityName.text =
                 "${weatherData.location.name}, ${weatherData.location.country}"
             binding.tvDate.text = weatherData.current.last_updated
-            if (weatherData.condition != null) {
-                binding.tvContiion.text = weatherData.current.condition.toString()
-            } else {
-                binding.tvContiion.text = "KOSONG"
-            }
+            binding.tvContiion.text = weatherData.current.condition.text
             binding.tvMainTemp.text = weatherData.current.temp_c.toString()
+            Glide.with(this)
+                .load("https:${weatherData.current.condition.icon}") // Sesuaikan URL ikon
+                .into(binding.mainWeather)
+            binding.tvWind.text  = weatherData.current.wind_kph.toString()
+            binding.tvHumidity.text = weatherData.current.humidity.toString()
+            binding.tvRain.text = weatherData.current.gust_kph.toString()
         }else{
             binding.tvCityName.text =
                 "GATAU"
