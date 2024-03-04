@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.TextView
 import android.Manifest
 import android.content.ContentValues.TAG
+import android.location.Geocoder
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -23,16 +24,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var weatherApiService: WeatherApiService
     private lateinit var binding : ActivityMainBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationHelper: LocationHelper // Add this line
 
     companion object {
         const val REQUEST_LOCATION_PERMISSION = 1001
+        const val TAG = "MainActivity"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -54,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         tabLayout.getTabAt(0)?.customView = createTabView("Today", 0, viewPager, tabLayout)
         tabLayout.getTabAt(1)?.customView = createTabView("Tomorrow", 1, viewPager, tabLayout)
         tabLayout.getTabAt(2)?.customView = createTabView("Next 10 days", 2, viewPager, tabLayout)
+
+        locationHelper = LocationHelper(this)
 
 
         fetchWeatherData()
@@ -99,21 +107,92 @@ class MainActivity : AppCompatActivity() {
 
         return tabView
     }
+
+
     private fun fetchWeatherData() {
+        if (checkLocationPermission()) {
+            locationHelper.getCurrentLocation { location ->
+                location?.let {
+                    fetchWeatherDataWithLocation(it.latitude, it.longitude)
+                } ?: showError("Failed to retrieve location")
+            }
+        } else {
+            requestLocationPermission()
+        }
+    }
+
+    private fun fetchWeatherDataWithLocation(latitude: Double, longitude: Double) {
+        val cityName = getCityName(latitude, longitude)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = (application as MyApplication).weatherApiService.getCurrentWeather(apiKey = "df86c238c7a34f89b9d35944240203", location = "London")
-                Log.d(TAG, "Response: $response")
+                val response = weatherApiService.getCurrentWeather(apiKey = "df86c238c7a34f89b9d35944240203", location = cityName)
                 withContext(Dispatchers.Main) {
                     updateUi(response)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    showError()
+                    showError("Failed to fetch weather data")
                 }
             }
         }
     }
+
+    private fun getCityName(latitude: Double, longitude: Double): String {
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try {
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (addresses != null && addresses.isNotEmpty()) {
+                return addresses[0].locality ?: ""
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return ""
+    }
+    private fun checkLocationPermission(): Boolean {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+    }
+
+    // Helper method to request location permissions
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            REQUEST_LOCATION_PERMISSION
+        )
+    }
+
+    // Handle permission request result
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    fetchWeatherData()
+                } else {
+                    showError("Location permission denied")
+                }
+            }
+        }
+    }
+
+
+//    private fun fetchWeatherData() {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            try {
+//                val response = (application as MyApplication).weatherApiService.getCurrentWeather(apiKey = "df86c238c7a34f89b9d35944240203", location = "London")
+//                Log.d(TAG, "Response: $response")
+//                withContext(Dispatchers.Main) {
+//                    updateUi(response)
+//                }
+//            } catch (e: Exception) {
+//                withContext(Dispatchers.Main) {
+//                    showError()
+//                }
+//            }
+//        }
+//    }
 
     private fun showError() {
 
