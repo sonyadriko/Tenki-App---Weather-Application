@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.example.tenki.databinding.ActivityMainBinding
 import com.example.tenki.model.WeatherData
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
@@ -15,15 +16,23 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var weatherApiService: WeatherApiService
+    private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         val viewPager = findViewById<ViewPager>(R.id.view_pager)
         setupViewPager(viewPager)
 
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.setupWithViewPager(viewPager)
+
+        weatherApiService = (application as MyApplication).weatherApiService
+
 
         viewPager.currentItem = 0
 
@@ -34,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         fetchWeatherData()
     }
+
 
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
@@ -77,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     private fun fetchWeatherData() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = (application as MyApplication).weatherApiService.getCurrentWeather(apiKey = "df86c238c7a34f89b9d35944240203", location = "City, Country")
+                val response = (application as MyApplication).weatherApiService.getCurrentWeather(apiKey = "df86c238c7a34f89b9d35944240203", location = "Surabaya, Indonesia")
                 withContext(Dispatchers.Main) {
                     updateUi(response)
                 }
@@ -91,6 +101,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUi(weatherData: WeatherData) {
         // Implementasi pembaruan UI
+        binding.tvCityName.text = "${weatherData.location.name}, ${weatherData.location.region}, ${weatherData.location.country}"
+        binding.tvDate.text = weatherData.current.last_updated
+        binding.tvContiion.text = weatherData.condition.text
+        binding.tvMainTemp.text = weatherData.current.tempc.toString()
+
     }
 
     private fun showError() {
