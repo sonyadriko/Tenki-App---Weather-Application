@@ -60,7 +60,7 @@
             <TextView
                 android:id="@+id/tv_mainTemp"
                 android:layout_width="wrap_content"
-                android:text="20"
+                tools:text="20"
                 android:fontFamily="@font/russoone"
                 android:textColor="@color/colorNeutral50"
                 android:textSize="64sp"
