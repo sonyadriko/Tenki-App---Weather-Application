@@ -228,7 +228,7 @@
         app:tabMode="fixed"
         app:tabTextColor="@color/colorNeutral50" />
 
-    <androidx.viewpager.widget.ViewPager
+    <com.example.tenki.SwipePagerLock
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

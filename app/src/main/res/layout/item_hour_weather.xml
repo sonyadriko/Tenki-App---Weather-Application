@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/medium_space"
+    app:cardBackgroundColor="#202329"
+    app:cardCornerRadius="@dimen/medium_space">
+    
+    <LinearLayout
+        android:paddingVertical="@dimen/small_space"
+        android:paddingHorizontal="@dimen/large_space"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_hour"
+            android:fontFamily="@font/chakrapetchregular"
+            android:textColor="@color/colorNeutral100"
+            android:layout_width="wrap_content"
+            android:text="10 pm"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/img_weather"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:scaleType="centerCrop"
+            android:src="@drawable/storm" />
+        <TextView
+            android:id="@+id/tv_temp"
+            android:textSize="18sp"
+            android:text="10°"
+            android:fontFamily="@font/chakrapetchregular"
+            android:textColor="@color/colorNeutral50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

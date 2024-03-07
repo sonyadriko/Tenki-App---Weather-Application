@@ -1,16 +1,13 @@
 package com.example.tenki
 
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.Manifest
-import android.content.ContentValues.TAG
 import android.location.Geocoder
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
@@ -32,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var weatherApiService: WeatherApiService
     private lateinit var binding : ActivityMainBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationHelper: LocationHelper // Add this line
+    private lateinit var locationHelper: LocationHelper
 
     companion object {
         const val REQUEST_LOCATION_PERMISSION = 1001
@@ -42,13 +39,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(R.layout.activity_main)
         setContentView(binding.root)
 
-        val viewPager = findViewById<ViewPager>(R.id.view_pager)
+        val viewPager = binding.viewPager
         setupViewPager(viewPager)
 
-        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
+        val tabLayout = binding.tabLayout
         tabLayout.setupWithViewPager(viewPager)
 
         weatherApiService = (application as MyApplication).weatherApiService
@@ -59,7 +55,10 @@ class MainActivity : AppCompatActivity() {
 
         tabLayout.getTabAt(0)?.customView = createTabView("Today", 0, viewPager, tabLayout)
         tabLayout.getTabAt(1)?.customView = createTabView("Tomorrow", 1, viewPager, tabLayout)
-        tabLayout.getTabAt(2)?.customView = createTabView("Next 10 days", 2, viewPager, tabLayout)
+        tabLayout.getTabAt(2)?.customView = createTabView("Next 3 days", 2, viewPager, tabLayout)
+
+
+
 
         locationHelper = LocationHelper(this)
 
@@ -70,13 +69,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(TodayFragment(), "Today")
-        adapter.addFragment(TomorrowFragment(), "Tomorrow")
-        adapter.addFragment(TomorrowFragment(), "Next 10 days")
+        adapter.addFragment(WeatherByTimeFragment.newInstance("today"), "Today")
+        adapter.addFragment(WeatherByTimeFragment.newInstance("tomorrow"), "Tomorrow")
+        adapter.addFragment(WeatherByTimeFragment.newInstance("next_three_days"), "Next 3 days")
         viewPager.adapter = adapter
-
     }
-
     private fun createTabView(title: String, position: Int, viewPager: ViewPager, tabLayout: TabLayout): View {
         val tabView = LayoutInflater.from(this).inflate(R.layout.custom_tabview, null)
         val textView = tabView.findViewById<TextView>(android.R.id.text1)
@@ -108,7 +105,6 @@ class MainActivity : AppCompatActivity() {
         return tabView
     }
 
-
     private fun fetchWeatherData() {
         if (checkLocationPermission()) {
             locationHelper.getCurrentLocation { location ->
@@ -125,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         val cityName = getCityName(latitude, longitude)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = weatherApiService.getCurrentWeather(apiKey = "df86c238c7a34f89b9d35944240203", location = cityName)
+                val response = weatherApiService.getHourlyForecast(apiKey = "df86c238c7a34f89b9d35944240203", location = cityName)
                 withContext(Dispatchers.Main) {
                     updateUi(response)
                 }
@@ -136,7 +132,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun getCityName(latitude: Double, longitude: Double): String {
         val geocoder = Geocoder(this, Locale.getDefault())
         try {
@@ -281,6 +276,7 @@ class MainActivity : AppCompatActivity() {
             binding.tvWind.text  = weatherData.current.wind_kph.toString()
             binding.tvHumidity.text = weatherData.current.humidity.toString()
             binding.tvRain.text = weatherData.current.gust_kph.toString()
+
         }else{
             binding.tvCityName.text =
                 "GATAU"
