@@ -1,7 +1,17 @@
-- **Prakiraan Cuaca Terkini:** "Tenki" menyediakan prakiraan cuaca terkini dengan detail suhu, kelembaban, kecepatan angin, dan kondisi langit untuk lokasi yang dipilih.
-- **Notifikasi Cuaca:** Fitur notifikasi memberi tahu pengguna mengenai perubahan cuaca mendadak, peringatan badai, atau kondisi cuaca ekstrem di area setempat.
-- **Histori Cuaca:** Riwayat cuaca memungkinkan pengguna melihat tren cuaca sebelumnya untuk memahami pola yang mungkin mempengaruhi kegiatan mereka.
-- **Antarmuka Pengguna yang Ramah:** Desain antarmuka yang ramah pengguna dengan visualisasi cuaca yang menarik membuat informasi cuaca mudah dipahami.
-- **Peta Interaktif:** Peta cuaca interaktif memungkinkan pengguna menjelajahi kondisi cuaca di berbagai lokasi dengan mudah.
-- **Pengaturan Preferensi:** Opsi pengaturan memungkinkan pengguna mengkustomisasi tampilan dan unit pengukuran cuaca sesuai dengan preferensi pribadi.
-- **Widget Cuaca:** Widget cuaca memungkinkan pengguna melihat informasi cuaca langsung dari layar utama perangkat mereka.
+<h2>Background</h2>
+With the increasing need for accurate and real-time weather information, Tenki App aims to provide users with an easy-to-use interface to access weather data. Whether planning daily activities or preparing for severe weather conditions, having reliable weather information at your fingertips is essential.
+<h2>Key Features</h2>
+Current Weather: Displays the current weather conditions for a selected location.
+Weather Forecast: Provides a 5-day weather forecast with detailed information.
+Location Search: Allows users to search for weather information by city name.
+User-Friendly Interface: Simple and intuitive interface designed for ease of use.
+Weather Alerts: Displays weather alerts and notifications for severe weather conditions (if available from API).
+<h2>Technologies Used</h2>
+Kotlin: Used for developing the Android application.
+OpenWeatherMap API: Used for fetching real-time weather data.
+XML/JSON: Used for parsing and displaying weather data.
+Android Studio: IDE used for developing the application.
+<h2>Contribution</h2>
+Contributions are welcome! Please open an issue for discussion or submit a pull request for improvements or new features.
+<h2>License</h2>
+This project is licensed under the MIT License 
